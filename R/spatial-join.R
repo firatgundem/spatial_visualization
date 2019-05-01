@@ -56,8 +56,10 @@ ggsave("doc/fig1.png", width = 5)
 #Spatial Join
 
 #count how many areas in each area
-st_join(libraries, areas) %>% count(community)
-
 libraries_with_areas <- st_join(libraries, areas)
 
 count(libraries_with_areas, community)
+
+#use the pipe to do it in one line
+st_join(libraries, areas) %>% count(community)
+
