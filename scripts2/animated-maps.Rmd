@@ -1,0 +1,42 @@
+---
+title: "animated-map"
+author: "Firat"
+date: "May 22, 2019"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Animated Map Example
+
+#Install Packages
+```{r}
+library(sf)
+library(tidyverse)
+library(spData)
+library(tmap)
+library(magick)
+```
+
+
+#Run the codes
+```{r}
+m_save = world %>% filter(continent != "Antarctica") %>% 
+  tm_shape() + 
+  tm_polygons() +
+  tm_shape(urban_agglomerations) +
+  tm_dots(size = "population_millions", title.size = "Population (m)", alpha = 0.5, col = "red") +
+  tm_facets(along = "year", free.coords = FALSE)
+
+tmap::tmap_animation(tm = m_save, filename = "C:/Users/firat/Desktop/Spatial Visualization/scripts2/urban-animated.gif", width = 1200, height = 800)
+
+magick::image_read("C:/Users/firat/Desktop/Spatial Visualization/scripts2/urban-animated.gif")
+```
+
+
+```
+
