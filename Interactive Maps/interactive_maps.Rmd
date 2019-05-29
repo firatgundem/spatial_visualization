@@ -1,0 +1,97 @@
+---
+title: "Practice Interactive Maps"
+author: "Firat"
+date: "May 29, 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load packages
+
+```{r}
+library(tmap)
+library(mapview)
+library(leaflet)
+library(spData)
+library(dplyr)
+```
+## Data Wrangling
+
+```{r}
+urban10 <- filter(urban_agglomerations, year == 2010)
+urban15 <- filter(urban_agglomerations, year == 2015)
+```
+
+## Arrange tmaps
+
+```{r}
+urban10_map <- qtm(urban10)
+urban15_map <- qtm(urban15)
+
+tmap_mode("view")
+tmap_arrange(urban10_map, urban15_map, ncol = 2)
+
+
+```
+
+
+
+## Make a static tmap
+
+```{r}
+tm_shape(world) +
+  tm_polygons() +
+tm_shape(urban_agglomerations) +
+  tm_dots(size = "population_millions")
+```
+## Make interactive tmap
+
+```{r}
+tmap_mode("view")
+
+tm_shape(urban) +
+  tm_dots("population_millions") +
+  tm_basemap(server = "Stamen.Terrain")
+
+```
+
+
+## Try multiple years in one
+
+```{r}
+filter(urban_agglomerations, )
+
+```
+
+## Make mapview interactive map and popups
+
+```{r}
+mapview(urban10, popup = popupTable(urban10, 
+                                    zcol = c("year",
+                                             "country_or_area",
+                                             "urban_agglomeration",
+                                             "population_millions")))
+```
+```{r}
+view
+```
+
+
+## Leaflet map
+
+```{r}
+leaflet(data = urban10) %>% 
+  addTiles() %>% 
+  addCircles()
+```
+
+
+```{r}
+leaflet(data = urban10) %>% 
+  addTiles() %>% 
+  addMarkers( popup = ~population_millions)
+```
+
